@@ -1,0 +1,60 @@
+# use glob syntax.
+syntax: glob
+*.ser
+*.class
+*~
+*.bak
+#*.off
+*.old
+
+# eclipse conf file
+.settings
+.classpath
+.project
+.manager
+.scala_dependencies
+
+# idea
+.idea
+*.iml
+
+# building
+#target
+build
+null
+tmp*
+temp*
+dist
+test-output
+build.log
+
+# other scm
+.svn
+.CVS
+.hg*
+
+# switch to regexp syntax.
+#  syntax: regexp
+#  ^\.pc/
+
+#SHITTY output not in target directory
+/.cache-main
+/.cache-tests
+/checkpoint/
+/flink-demo/dependency-reduced-pom.xml
+/flink-util/dependency-reduced-pom.xml
+/resources/target/
+/flink-util/target/
+/flink-sql/target/
+/flink-sql/dependency-reduced-pom.xml
+/flink-demo/target/
+/flink-cep/target/
+/flink-cep/dependency-reduced-pom.xml
+/flink-batch/target/
+/es-shade/target/
+/es-shade/dependency-reduced-pom.xml
+/assembly/target/
+/savepoint/
+/flink-function/target/
+/flink-sourcesink/target/
+/flink-testutil/target/

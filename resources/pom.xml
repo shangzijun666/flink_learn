@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>flink-learn</artifactId>
+        <groupId>com.flink.learn</groupId>
+        <version>1.14.2</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>resources</artifactId>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>main/resources</directory>
+            </resource>
+            <resource>
+                <directory>main/resources/config</directory>
+            </resource>
+            <resource>
+                <directory>resources</directory>
+            </resource>
+            <resource>
+                <directory>${project.basedir}</directory>
+                <!--可以在此配置过滤文件  -->
+                <includes>
+                    <include>**/*.xsd</include>
+                    <include>**/*.properties</include>
+                </includes>
+                <!--开启filtering功能  -->
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <filters>
+            <filter>
+                ${project.basedir}/profile/${env}_env.properties
+            </filter>
+        </filters>
+
+        <plugins>
+            <plugin>
+                <!-- Description: https://github.com/git-commit-id/git-commit-id-maven-plugin
+                    Used to show the git ref when starting the jobManager. -->
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>4.0.2</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <skipPoms>false</skipPoms>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                    <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
+                    <gitDescribe>
+                        <!-- Don't generate the describe property -->
+                        <!-- It is useless due to the way Flink does branches and tags -->
+                        <skip>true</skip>
+                    </gitDescribe>
+                </configuration>
+            </plugin>
+            <!--拷贝文件插件-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <encoding>UTF-8</encoding>
+                            <outputDirectory>${project.build.directory}/${project.artifactId}/conf</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/conf</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>*</include>
+                                    </includes>
+                                    <excludes>
+                                        <exclude>*.iml</exclude>
+                                        <exclude>build.xml</exclude>
+                                        <exclude>pom.xml</exclude>
+                                    </excludes>
+                                </resource>
+                                <resource>
+                                    <directory>${project.basedir}/conf</directory>
+                                    <includes>
+                                        <include>**/*.p12</include>
+                                    </includes>
+                                    <filtering>false</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>${project.basedir}/conf</directory>
+                                    <includes>
+                                        <include>**/*.sh</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                            <nonFilteredFileExtensions>
+                                <nonFilteredFileExtension>pkcs12</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>jks</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>p12</nonFilteredFileExtension>
+                            </nonFilteredFileExtensions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
